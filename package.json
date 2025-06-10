@@ -1,0 +1,25 @@
+{
+  "name": "shopify-3d-printing-app",
+  "version": "1.0.0",
+  "description": "3D printing custom order app for Shopify stores",
+  "main": "app/index.js",
+  "scripts": {
+    "start": "node app/index.js",
+    "dev": "nodemon app/index.js",
+    "build": "npm run build",
+    "test": "npm test"
+  },
+  "keywords": ["shopify", "3d-printing", "e-commerce"],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "typescript": "^5.2.2",
+    "@types/node": "^20.8.0"
+  }
+}
