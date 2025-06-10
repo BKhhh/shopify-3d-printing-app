@@ -1,0 +1,298 @@
+/*!
+ * File Upload Component Styles
+ * @author @aduy0 <aduy050302@gmail.com>
+ * @created 2025-06-10
+ */
+
+.file-upload-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.upload-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.upload-header h2 {
+  color: #2c3e50;
+  margin-bottom: 8px;
+  font-size: 24px;
+}
+
+.upload-header p {
+  color: #7f8c8d;
+  font-size: 16px;
+}
+
+/* @aduy0 - Customer info section */
+.customer-info {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.customer-info label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.customer-info input {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #e9ecef;
+  border-radius: 6px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.customer-info input:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+/* @aduy0 - Upload area styles */
+.upload-area {
+  border: 3px dashed #bdc3c7;
+  border-radius: 12px;
+  padding: 40px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: #fdfdfd;
+  margin-bottom: 20px;
+}
+
+.upload-area:hover {
+  border-color: #3498db;
+  background: #f0f8ff;
+}
+
+.upload-area.dragover {
+  border-color: #2ecc71;
+  background: #f0fff4;
+}
+
+.upload-content {
+  pointer-events: none;
+}
+
+.upload-icon {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.file-icon {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.upload-prompt p {
+  margin: 8px 0;
+  color: #2c3e50;
+}
+
+.file-types {
+  font-size: 14px;
+  color: #7f8c8d;
+}
+
+.file-selected p {
+  margin: 5px 0;
+  color: #2c3e50;
+}
+
+/* @aduy0 - Upload button */
+.upload-button {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.upload-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #2980b9, #1f5f8b);
+  transform: translateY(-2px);
+}
+
+.upload-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* @aduy0 - Success section */
+.upload-success {
+  background: #f8fff4;
+  border: 2px solid #2ecc71;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.file-info {
+  margin-bottom: 30px;
+}
+
+.file-info h3 {
+  color: #27ae60;
+  margin-bottom: 15px;
+}
+
+.file-details {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  border-left: 4px solid #2ecc71;
+}
+
+.file-details p {
+  margin: 5px 0;
+  color: #2c3e50;
+}
+
+/* @aduy0 - Print options styling */
+.print-options {
+  margin-bottom: 30px;
+}
+
+.print-options h3 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #ecf0f1;
+  padding-bottom: 10px;
+}
+
+.option-group {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.option-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.option-group select,
+.option-group input[type="range"] {
+  width: 100%;
+  padding: 8px;
+  border: 2px solid #e9ecef;
+  border-radius: 6px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.option-group select:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+.option-group input[type="range"] {
+  height: 6px;
+  background: #e9ecef;
+  outline: none;
+  border: none;
+  border-radius: 3px;
+}
+
+.option-group input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #3498db;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.option-group small {
+  display: block;
+  margin-top: 5px;
+  color: #7f8c8d;
+  font-size: 12px;
+}
+
+/* @aduy0 - Price display */
+.price-display {
+  background: linear-gradient(135deg, #f39c12, #e67e22);
+  color: white;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.price-display h3 {
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+.total-price {
+  font-size: 32px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.price-breakdown small {
+  display: block;
+  margin-bottom: 20px;
+  opacity: 0.9;
+}
+
+.add-to-cart-button {
+  background: white;
+  color: #e67e22;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.add-to-cart-button:hover {
+  background: #ecf0f1;
+  transform: translateY(-2px);
+}
+
+/* @aduy0 - Responsive design */
+@media (max-width: 768px) {
+  .file-upload-container {
+    margin: 10px;
+    padding: 15px;
+  }
+  
+  .upload-area {
+    padding: 20px 15px;
+  }
+  
+  .upload-icon,
+  .file-icon {
+    font-size: 36px;
+  }
+  
+  .total-price {
+    font-size: 24px;
+  }
+}
