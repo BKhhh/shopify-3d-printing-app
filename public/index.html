@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom 3D Printing - Upload Your Design</title>
+    <style>
+        /* [aduy0] - Embedded styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+           min-height: 100vh;
+           padding: 20px;
+       }
+
+       .container {
+           max-width: 900px;
+           margin: 0 auto;
+           background: white;
+           border-radius: 16px;
+           box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+           overflow: hidden;
+       }
+
+       .header {
+           background: linear-gradient(135deg, #667eea, #764ba2);
+           color: white;
+           padding: 30px;
+           text-align: center;
+       }
+
+       .header h1 {
+           font-size: 28px;
+           margin-bottom: 10px;
+       }
+
+       .header p {
+           font-size: 16px;
+           opacity: 0.9;
+       }
+
+       .content {
+           padding: 30px;
+       }
+
+       .step {
+           margin-bottom: 30px;
+           padding: 20px;
+           border: 2px solid #e9ecef;
+           border-radius: 12px;
+           transition: all 0.3s ease;
+       }
+
+       .step.active {
+           border-color: #667eea;
+           background: #f8f9ff;
+       }
+
+       .step h3 {
+           color: #2c3e50;
+           margin-bottom: 15px;
+           display: flex;
+           align-items: center;
+           gap: 10px;
+       }
+
+       .step-number {
+           background: #667eea;
+           color: white;
+           width: 30px;
+           height: 30px;
+           border-radius: 50%;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           font-weight: bold;
+       }
+
+       /* Upload area styles */
+       .upload-area {
+           border: 3px dashed #bdc3c7;
+           border-radius: 12px;
+           padding: 40px 20px;
+           text-align: center;
+           cursor: pointer;
+           transition: all 0.3s ease;
+           background: #fdfdfd;
+       }
+
+       .upload-area:hover {
+           border-color: #667eea;
+           background: #f8f9ff;
+       }
+
+       .upload-area.dragover {
+           border-color: #2ecc71;
+           background: #f0fff4;
+       }
+
+       .upload-icon {
+           font-size: 48px;
+           margin-bottom: 15px;
+       }
+
+       .file-info {
+           background: #e8f5e8;
+           padding: 15px;
+           border-radius: 8px;
+           margin: 15px 0;
+       }
+
+       .form-group {
+           margin-bottom: 20px;
+       }
+
+       .form-group label {
+           display: block;
+           margin-bottom: 8px;
+           font-weight: 600;
+           color: #2c3e50;
+       }
+
+       .form-group input,
+       .form-group select {
+           width: 100%;
+           padding: 12px;
+           border: 2px solid #e9ecef;
+           border-radius: 8px;
+           font-size: 16px;
+       }
+
+       .form-group input:focus,
+       .form-group select:focus {
+           outline: none;
+           border-color: #667eea;
+       }
+
+       .options-grid {
+           display: grid;
+           grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+           gap: 20px;
+           margin: 20px 0;
+       }
+
+       .option-card {
+           background: white;
+           border: 2px solid #e9ecef;
+           border-radius: 12px;
+           padding: 20px;
+           transition: all 0.3s ease;
+       }
+
+       .option-card:hover {
+           border-color: #667eea;
+           transform: translateY(-2px);
+       }
+
+       .range-input {
+           width: 100%;
+           margin: 10px 0;
+       }
+
+       .price-display {
+           background: linear-gradient(135deg, #f39c12, #e67e22);
+           color: white;
+           padding: 25px;
+           border-radius: 12px;
+           text-align: center;
+           margin: 20px 0;
+       }
+
+       .price-amount {
+           font-size: 36px;
+           font-weight: bold;
+           margin: 10px 0;
+       }
+
+       .btn {
+           padding: 15px 30px;
+           border: none;
+           border-radius: 8px;
+           font-size: 16px;
+           font-weight: 600;
+           cursor: pointer;
+           transition: all 0.3s ease;
+       }
+
+       .btn-primary {
+           background: linear-gradient(135deg, #667eea, #764ba2);
+           color: white;
+       }
+
+       .btn-primary:hover:not(:disabled) {
+           transform: translateY(-2px);
+           box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+       }
+
+       .btn-success {
+           background: linear-gradient(135deg, #2ecc71, #27ae60);
+           color: white;
+           width: 100%;
+           font-size: 18px;
+       }
+
+       .btn:disabled {
+           opacity: 0.6;
+           cursor: not-allowed;
+           transform: none;
+       }
+
+       .hidden {
+           display: none;
+       }
+
+       .loading {
+           text-align: center;
+           padding: 20px;
+       }
+
+       .spinner {
+           border: 4px solid #f3f3f3;
+           border-top: 4px solid #667eea;
+           border-radius: 50%;
+           width: 40px;
+           height: 40px;
+           animation: spin 1s linear infinite;
+           margin: 0 auto 15px;
+       }
+
+       @keyframes spin {
+           0% { transform: rotate(0deg); }
+           100% { transform: rotate(360deg); }
+       }
+
+       @media (max-width: 768px) {
+           .container {
+               margin: 10px;
+           }
+           .content {
+               padding: 20px;
+           }
+           .options-grid {
+               grid-template-columns: 1fr;
+           }
+       }
+   </style>
+</head>
+<body>
+   <div class="container">
+       <div class="header">
+           <h1>NovaPrint: Custom 3D Printing Service</h1>
+           <p>Upload your 3D design and get instant pricing with customizable options</p>
+       </div>
+
+       <div class="content">
+
+           <!-- Step 1: File Upload -->
+           <div class="step" id="step2">
+               <h3>
+                   <span class="step-number">2</span>
+                   Upload Your 3D File
+               </h3>
+               <div class="upload-area" id="uploadArea">
+                   <div class="upload-content">
+                       <div class="upload-icon">☁️</div>
+                       <p><strong>Drop your 3D file here or click to browse</strong></p>
+                       <p>Supports: STL, OBJ, 3MF, PLY files (Max 100MB)</p>
+                   </div>
+                   <input type="file" id="fileInput" accept=".stl,.obj,.3mf,.ply" style="display: none;">
+               </div>
+               <div id="fileInfo" class="file-info hidden"></div>
+               <button class="btn btn-primary" id="uploadBtn" style="width: 100%; margin-top: 15px;" disabled>
+                   📤 Upload & Analyze File
+               </button>
+           </div>
+
+           <!-- Step 2: Loading -->
+           <div class="step hidden" id="loadingStep">
+               <div class="loading">
+                   <div class="spinner"></div>
+                   <h3>🔍 Analyzing your 3D file...</h3>
+                   <p>Please wait while we process your file and calculate pricing options.</p>
+               </div>
+           </div>
+
+           <!-- Step 3: Print Options -->
+           <div class="step hidden" id="step3">
+               <h3>
+                   <span class="step-number">3</span>
+                   Customize Your Print
+               </h3>
+               
+               <div class="options-grid">
+                   <div class="option-card">
+                       <div class="form-group">
+                           <label for="material">Material</label>
+                           <select id="material">
+                               <option value="PLA">PLA - Beginner Friendly ($)</option>
+                               <option value="ABS">ABS - Durable ($$)</option>
+                               <option value="PETG">PETG - Strong & Clear ($$$)</option>
+                               <option value="TPU">TPU - Flexible ($$$$)</option>
+                           </select>
+                       </div>
+                   </div>
+
+                   <div class="option-card">
+                       <div class="form-group">
+                           <label for="quality">Print Quality</label>
+                           <select id="quality">
+                               <option value="Draft">Draft - Fast (0.3mm)</option>
+                               <option value="Standard">Standard - Balanced (0.2mm)</option>
+                               <option value="High">High Quality - Detailed (0.15mm)</option>
+                               <option value="Ultra">Ultra High - Premium (0.1mm)</option>
+                           </select>
+                       </div>
+                   </div>
+
+                   <div class="option-card">
+                       <div class="form-group">
+                           <label for="infill">Infill Density: <span id="infillValue">20</span>%</label>
+                           <input type="range" id="infill" class="range-input" min="10" max="100" value="20">
+                           <small>Higher infill = stronger but more expensive</small>
+                       </div>
+                   </div>
+
+                   <div class="option-card">
+                       <div class="form-group">
+                           <label for="walls">Wall Thickness</label>
+                           <select id="walls">
+                               <option value="2">2 layers - Light</option>
+                               <option value="3">3 layers - Standard</option>
+                               <option value="4">4 layers - Strong</option>
+                               <option value="6">6 layers - Maximum</option>
+                           </select>
+                       </div>
+                   </div>
+
+                   <div class="option-card">
+                       <div class="form-group">
+                           <label for="supports">Support Structures</label>
+                           <select id="supports">
+                               <option value="None">None - Simple shapes</option>
+                               <option value="Auto">Auto - Recommended</option>
+                               <option value="Everywhere">Everywhere - Complex</option>
+                           </select>
+                       </div>
+                   </div>
+
+                   <div class="option-card">
+                       <div class="form-group">
+                           <label for="color">Color</label>
+                           <select id="color">
+                               <option value="White">White</option>
+                               <option value="Black">Black</option>
+                               <option value="Red">Red</option>
+                               <option value="Blue">Blue</option>
+                               <option value="Green">Green</option>
+                               <option value="Yellow">Yellow</option>
+                               <option value="Custom">Custom (Contact for availability)</option>
+                           </select>
+                       </div>
+                   </div>
+               </div>
+           </div>
+
+           <!-- Step 4: Price & Order -->
+           <div class="step hidden" id="step4">
+               <h3>
+                   <span class="step-number">4</span>
+                   Review & Order
+               </h3>
+               
+               <div id="orderSummary" class="file-info">
+                   <!-- Order summary will be populated by JavaScript -->
+               </div>
+
+               <div class="price-display">
+                   <h3>💰 Total Price</h3>
+                   <div class="price-amount" id="totalPrice">$0.00</div>
+                   <p><small>*Price includes materials, printing, and basic finishing</small></p>
+               </div>
+
+               <button class="btn btn-success" id="addToCartBtn">
+                   🛒 Add to Cart & Continue to Checkout
+               </button>
+           </div>
+       </div>
+   </div>
+
+   <script>
+       /*!
+        * 3D Printing Upload Interface JavaScript
+        * @author aduy0 <aduy050302@gmail.com>
+        * @created 2025-06-10
+        */
+
+       // aduy0 - Application state
+       let appState = {
+            currentStep: 1,
+            customerInfo: { email: 'anonymous@customer.com', name: 'Anonymous Customer' }, // Default values
+            fileInfo: null,
+            printOptions: {
+                material: 'PLA',
+                quality: 'Standard',
+                infill: 20,
+                walls: 3,
+                supports: 'Auto',
+                color: 'White'
+            },
+            basePrice: 0,
+            finalPrice: 0
+        };
+
+       // aduy0 - DOM elements
+       const elements = {
+            steps: document.querySelectorAll('.step'),
+            uploadArea: document.getElementById('uploadArea'),
+            fileInput: document.getElementById('fileInput'),
+            fileInfo: document.getElementById('fileInfo'),
+            uploadBtn: document.getElementById('uploadBtn'),
+            loadingStep: document.getElementById('loadingStep'),
+            infillSlider: document.getElementById('infill'),
+            infillValue: document.getElementById('infillValue'),
+            totalPrice: document.getElementById('totalPrice'),
+            orderSummary: document.getElementById('orderSummary'),
+            addToCartBtn: document.getElementById('addToCartBtn')
+        };
+
+       // aduy0 - Initialize event listeners
+       function initializeApp() {
+            // File upload handling
+            elements.uploadArea.addEventListener('click', () => elements.fileInput.click());
+            elements.uploadArea.addEventListener('dragover', handleDragOver);
+            elements.uploadArea.addEventListener('drop', handleDrop);
+            elements.fileInput.addEventListener('change', handleFileSelect);
+            elements.uploadBtn.addEventListener('click', uploadFile);
+
+            // Print options
+            elements.infillSlider.addEventListener('input', updateInfillValue);
+            document.querySelectorAll('select').forEach(select => {
+                select.addEventListener('change', updatePrintOptions);
+            });
+            elements.infillSlider.addEventListener('change', updatePrintOptions);
+
+            // Add to cart
+            elements.addToCartBtn.addEventListener('click', addToCart);
+
+            console.log('[Your Name] - 3D Printing Interface initialized');
+        }
+
+       // aduy0 - Step navigation
+        function showStep(stepNumber) {
+            elements.steps.forEach(step => step.classList.add('hidden'));
+            elements.loadingStep.classList.add('hidden');
+            
+            if (stepNumber === 'loading') {
+                elements.loadingStep.classList.remove('hidden');
+            } else {
+                document.getElementById(`step${stepNumber}`).classList.remove('hidden');
+                appState.currentStep = stepNumber;
+            }
+        }
+
+       // aduy0 - Validate customer information
+       function validateStep1() {
+           const email = elements.customerEmail.value;
+           const isValid = email && email.includes('@') && email.includes('.');
+           
+           if (isValid) {
+               appState.customerInfo.email = email;
+               appState.customerInfo.name = elements.customerName.value;
+               showStep(2);
+           }
+       }
+
+       // aduy0 - File handling
+       function handleDragOver(e) {
+           e.preventDefault();
+           elements.uploadArea.classList.add('dragover');
+       }
+
+       function handleDrop(e) {
+           e.preventDefault();
+           elements.uploadArea.classList.remove('dragover');
+           const files = e.dataTransfer.files;
+           if (files.length > 0) {
+               handleFileSelect({ target: { files } });
+           }
+       }
+
+       function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                appState.selectedFile = file;
+                displayFileInfo(file);
+                elements.uploadBtn.disabled = false;
+            }
+        }
+
+       function displayFileInfo(file) {
+           const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+           elements.fileInfo.innerHTML = `
+               <h4>📁 Selected File:</h4>
+               <p><strong>Name:</strong> ${file.name}</p>
+               <p><strong>Size:</strong> ${sizeMB} MB</p>
+               <p><strong>Type:</strong> ${file.type || 'Unknown'}</p>
+           `;
+           elements.fileInfo.classList.remove('hidden');
+       }
+
+       // aduy0 - File upload
+       async function uploadFile() {
+            if (!appState.selectedFile) return;
+
+            showStep('loading');
+            elements.uploadBtn.disabled = true;
+
+            const formData = new FormData();
+            formData.append('3dFile', appState.selectedFile);
+            formData.append('customerEmail', appState.customerInfo.email); // Use default email
+            formData.append('fileName', appState.selectedFile.name);
+
+            try {
+                const response = await fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    appState.fileInfo = result.fileInfo;
+                    appState.printOptions = { ...appState.printOptions, ...result.printingOptions };
+                    appState.basePrice = parseFloat(result.estimatedPrice.base);
+                    
+                    updatePrintOptionsUI();
+                    calculatePrice();
+                    showStep(2); // Go to customize step (previously step 3)
+                } else {
+                    throw new Error(result.message);
+                }
+            } catch (error) {
+                alert('Upload failed: ' + error.message);
+                showStep(1); // Back to upload step
+                elements.uploadBtn.disabled = false;
+            }
+        }
+
+       // aduy0 - Update print options UI
+       function updatePrintOptionsUI() {
+           document.getElementById('material').value = appState.printOptions.material;
+           document.getElementById('quality').value = appState.printOptions.quality;
+           document.getElementById('infill').value = appState.printOptions.infill;
+           document.getElementById('walls').value = appState.printOptions.walls;
+           document.getElementById('supports').value = appState.printOptions.supports;
+           updateInfillValue();
+       }
+
+       function updateInfillValue() {
+           const value = elements.infillSlider.value;
+           elements.infillValue.textContent = value;
+           appState.printOptions.infill = parseInt(value);
+       }
+
+       function updatePrintOptions() {
+           appState.printOptions = {
+               material: document.getElementById('material').value,
+               quality: document.getElementById('quality').value,
+               infill: parseInt(document.getElementById('infill').value),
+               walls: parseInt(document.getElementById('walls').value),
+               supports: document.getElementById('supports').value,
+               color: document.getElementById('color').value
+           };
+           calculatePrice();
+       }
+
+       // aduy0 - Price calculation
+       function calculatePrice() {
+            let multiplier = 1;
+
+            // Material multipliers
+            const materialMultipliers = { 'PLA': 1, 'ABS': 1.2, 'PETG': 1.3, 'TPU': 2.0 };
+            multiplier *= materialMultipliers[appState.printOptions.material] || 1;
+
+            // Quality multipliers
+            const qualityMultipliers = { 'Draft': 0.8, 'Standard': 1, 'High': 1.4, 'Ultra': 2.0 };
+            multiplier *= qualityMultipliers[appState.printOptions.quality] || 1;
+
+            // Infill multiplier (20% is baseline)
+            multiplier *= (appState.printOptions.infill / 20);
+
+            // Wall thickness multiplier
+            multiplier *= (appState.printOptions.walls / 3);
+
+            // Support multiplier
+            if (appState.printOptions.supports === 'Everywhere') multiplier *= 1.3;
+            else if (appState.printOptions.supports === 'Auto') multiplier *= 1.1;
+
+            appState.finalPrice = appState.basePrice * multiplier;
+            elements.totalPrice.textContent = `$${appState.finalPrice.toFixed(2)}`;
+
+            // Update order summary
+            if (appState.fileInfo) {
+                updateOrderSummary();
+                showStep(3); // Go to review step (previously step 4)
+            }
+        }
+
+       // aduy0 - Order summary
+        function updateOrderSummary() {
+            elements.orderSummary.innerHTML = `
+                <h4>📋 Order Summary</h4>
+                <p><strong>File:</strong> ${appState.fileInfo.originalName}</p>
+                <p><strong>Size:</strong> ${appState.fileInfo.size}</p>
+                <p><strong>Material:</strong> ${appState.printOptions.material}</p>
+                <p><strong>Quality:</strong> ${appState.printOptions.quality}</p>
+                <p><strong>Infill:</strong> ${appState.printOptions.infill}%</p>
+                <p><strong>Walls:</strong> ${appState.printOptions.walls} layers</p>
+                <p><strong>Supports:</strong> ${appState.printOptions.supports}</p>
+                <p><strong>Color:</strong> ${appState.printOptions.color}</p>
+            `;
+        }
+
+       // aduy0 - Add to cart (placeholder)
+       function addToCart() {
+           const orderData = {
+               customer: appState.customerInfo,
+               file: appState.fileInfo,
+               options: appState.printOptions,
+               price: appState.finalPrice
+           };
+
+           // Integrate with Shopify cart system
+           console.log('aduy0 - Adding to cart:', orderData);
+           
+           alert(`🎉 Added to cart! Total: $${appState.finalPrice.toFixed(2)}\n\nThis would normally redirect to Shopify checkout.`);
+       }
+
+       // aduy0 - Initialize app when page loads
+       document.addEventListener('DOMContentLoaded', initializeApp);
+   </script>
+</body>
+</html>
