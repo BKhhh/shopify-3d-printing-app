@@ -1,0 +1,27 @@
+# Learn more about configuring your Shopify app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+name = "3d-printing-app"
+client_id = "ad16ce04e107063af2f45ca92840c862"
+application_url = "http://localhost:3000"
+embedded = true
+
+[access_scopes]
+# Define the access scopes your app needs
+scopes = "write_products,read_products,write_files,read_files"
+
+[auth]
+redirect_urls = [
+  "http://localhost:3000/auth/callback",
+  "http://localhost:3000/auth/shopify/callback",
+  "http://localhost:3000/api/auth/callback"
+]
+
+[webhooks]
+api_version = "2024-01"
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "https://just-a-test-store-app-dev.myshopify.com/" 
+
+[pos]
+embedded = false
