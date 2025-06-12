@@ -17,14 +17,18 @@
   "author": "Your Name",
   "license": "MIT",
   "dependencies": {
+    "@shopify/shopify_function": "~2.0.0",
+    "@shopify/ui-extensions": "2025.4.0",
+    "@shopify/ui-extensions-react": "2025.4.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-validator": "^7.2.1",
     "helmet": "^8.1.0",
     "multer": "^2.0.1",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-reconciler": "0.29.0"
   },
   "devDependencies": {
     "@types/multer": "^1.4.13",
@@ -33,5 +37,8 @@
     "nodemon": "^3.0.1",
     "typescript": "^5.2.2",
     "vite": "^6.3.5"
+  },
+  "overrides": {
+    "@types/react": "17.0.30"
   }
 }
